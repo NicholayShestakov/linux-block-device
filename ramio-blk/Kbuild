@@ -9,6 +9,6 @@ ccflags-y := 	-Wall					\
 		-Werror=format-security			\
 		-Werror=implicit-function-declaration	
 
-myblk-y := main.o
+ramioblk-y := main.o
 
-obj-m := myblk.o
+obj-m := ramioblk.o
