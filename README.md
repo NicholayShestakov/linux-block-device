@@ -70,3 +70,10 @@ To unload the device use
 $ sudo umount <path_to_mount_directory>
 $ sudo rmmod ramioblk
 ```
+
+### Tests
+Go to folder with device code and run
+```
+$ make
+$ sudo ./test.sh
+```
