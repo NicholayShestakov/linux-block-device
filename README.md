@@ -45,7 +45,7 @@ $ make
 ```
 For install module over base device to kernel  
 ```
-$ sudo insmod obdblk.ko <path_to_base_device>
+$ sudo insmod obdblk.ko base_device_name=<path_to_base_device>
 ```
 For check that the device is succesfully loaded use
 ```
