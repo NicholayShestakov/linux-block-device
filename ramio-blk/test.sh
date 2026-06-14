@@ -36,8 +36,8 @@ fi
 
 echo "--- Test 1: Raw I/O Integrity ---"
 TEST_STR="Ramioblk Data Integrity Check $(date)"
-echo "$TEST_STR" | sudo dd of=$DEV_PATH bs=512 count=1 conv=fsync status=none
-RESULT=$(sudo dd if=$DEV_PATH bs=512 count=1 status=none | tr -d '\0')
+echo "$TEST_STR" | sudo dd of=$DEV_PATH bs=512 count=1 oflag=direct status=none
+RESULT=$(sudo dd if=$DEV_PATH bs=512 count=1 iflag=direct status=none | tr -d '\0')
 
 if [[ "$RESULT" == *"$TEST_STR"* ]]; then
     echo "[OK] Raw Read/Write successful"
@@ -48,8 +48,8 @@ fi
 
 echo "--- Test 2: Bulk Transfer (MD5 Verification) ---"
 dd if=/dev/urandom of=/tmp/ramio_src bs=1M count=$TEST_FILE_SIZE_MB status=none
-sudo dd if=/tmp/ramio_src of=$DEV_PATH bs=1M count=$TEST_FILE_SIZE_MB conv=fsync status=none
-sudo dd if=$DEV_PATH of=/tmp/ramio_dst bs=1M count=$TEST_FILE_SIZE_MB status=none
+sudo dd if=/tmp/ramio_src of=$DEV_PATH bs=1M count=$TEST_FILE_SIZE_MB oflag=direct status=none
+sudo dd if=$DEV_PATH of=/tmp/ramio_dst bs=1M count=$TEST_FILE_SIZE_MB iflag=direct status=none
 
 SRC_HASH=$(md5sum /tmp/ramio_src | awk '{print $1}')
 DST_HASH=$(md5sum /tmp/ramio_dst | awk '{print $1}')
