@@ -1,4 +1,6 @@
 #include <linux/module.h>
+#include <linux/sched.h>
+#include <linux/highmem.h>
 #include <linux/blkdev.h>
 #include <linux/blk-mq.h>
 #include <linux/init.h>
@@ -39,8 +41,8 @@ static blk_status_t ramio_queue_rq(struct blk_mq_hw_ctx *hctx,
                 return BLK_STS_IOERR;
         }
 
-        rq_for_each_segment(bvec, req, iter) {
-                void *buffer = page_address(bvec.bv_page) + bvec.bv_offset;
+        rq_for_each_bvec(bvec, req, iter) {
+                void *buffer = bvec_kmap_local(&bvec);
                 size_t count = bvec.bv_len;
 
                 if (dir == READ) {
@@ -48,6 +50,8 @@ static blk_status_t ramio_queue_rq(struct blk_mq_hw_ctx *hctx,
                 } else {
                         memcpy(dev->data + offset, buffer, count);
                 }
+
+                kunmap_local(buffer);
                 offset += count;
         }
 
