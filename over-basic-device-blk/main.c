@@ -20,7 +20,6 @@
 #define DEVICE_NAME "obdblk"
 
 static char *base_device_name = NULL;
-module_param(base_device_name, charp, 0444);
 
 struct obd_block_dev {
         struct file *base_file;
@@ -161,6 +160,8 @@ static void __exit obd_exit(void)
         }
         pr_info("obdblk: unloaded successfully\n");
 }
+
+module_param(base_device_name, charp, 0444);
 
 module_init(obd_init);
 module_exit(obd_exit);
