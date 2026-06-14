@@ -45,8 +45,8 @@ fi
 
 echo "--- Test 1: Raw Read/Write integrity ---"
 TEST_STR="Kernel Data Integrity Test"
-echo "$TEST_STR" | sudo dd of=$DEV_PATH bs=512 count=1 conv=fsync status=none
-RESULT=$(sudo dd if=$DEV_PATH bs=512 count=1 status=none | tr -d '\0')
+echo "$TEST_STR" | sudo dd of=$DEV_PATH bs=512 count=1 oflag=direct status=none
+RESULT=$(sudo dd if=$DEV_PATH bs=512 count=1 iflag=direct status=none | tr -d '\0')
 
 if [[ "$RESULT" == *"$TEST_STR"* ]]; then
     echo "[OK] Raw Read/Write successful"
